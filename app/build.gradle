@@ -24,10 +24,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    // Enable view binding
+    buildFeatures {
+        viewBinding true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -48,4 +55,6 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-auth-ktx' // Import authentication
     implementation 'com.google.firebase:firebase-firestore-ktx' // Import Firestore
+
+    implementation 'com.google.android.gms:play-services-auth:20.4.1' // Import Google Play services library
 }
