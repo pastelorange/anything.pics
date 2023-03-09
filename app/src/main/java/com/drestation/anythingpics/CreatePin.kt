@@ -1,70 +1,60 @@
 package com.drestation.anythingpics
 
+import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.drestation.anythingpics.databinding.ActivityCreatePinBinding
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 class CreatePin : AppCompatActivity() {
     private lateinit var binding: ActivityCreatePinBinding // Enable binding
-    private lateinit var storageRef: StorageReference
-    private lateinit var firebaseFirestore: FirebaseFirestore
-    private var imageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreatePinBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initVars()
-
         binding.createBtn.setOnClickListener {
-            uploadImage()
+            val galleryIntent = Intent(Intent.ACTION_PICK)
+            galleryIntent.type = "image/*"
+            imageUploadLauncher.launch(galleryIntent)
         }
     }
 
-    /*private val launcher = registerForActivityResult(ActivityResultContracts.GetContent()) {
-        imageUri = it
-        // success?
-    }*/
+    private var imageUploadLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result != null) {
+                // Get uri of selected image
+                val imageUri: Uri? = result.data?.data
 
-    private fun initVars() {
-        storageRef = FirebaseStorage.getInstance().reference.child("Images")
-        firebaseFirestore = FirebaseFirestore.getInstance()
-    }
+                // Extract file name with extension
+                val fileName = imageUri?.path?.lastIndexOf('/')?.let { imageUri.path?.substring(it) }
 
-    private fun uploadImage() {
-        storageRef = storageRef.child(System.currentTimeMillis().toString())
+                // Uploading the file
+                val storageRef = Firebase.storage.reference
+                val uploadTask = storageRef.child("img/$fileName").putFile(imageUri!!)
 
-        imageUri?.let {
-            storageRef.putFile(it).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    storageRef.downloadUrl.addOnSuccessListener { uri ->
-                        val map = HashMap<String, Any>()
-                        map["image"] = uri.toString()
-
-                        firebaseFirestore.collection("images").add(map)
-                            .addOnCompleteListener { firestoreTask ->
-                                if (firestoreTask.isSuccessful) {
-                                    Toast.makeText(this, "Uploaded successfully", Toast.LENGTH_LONG)
-                                        .show()
-                                } else {
-                                    Toast.makeText(
-                                        this,
-                                        firestoreTask.exception?.message,
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            }
+                uploadTask.addOnSuccessListener {
+                    storageRef.child("upload/$fileName").downloadUrl.addOnSuccessListener {
+                        Toast.makeText(this, "Uploaded successfully", Toast.LENGTH_LONG).show()
+                    }.addOnFailureListener {
+                        Toast.makeText(this, "DOWNLOAD FAIL", Toast.LENGTH_LONG).show()
+                        Log.e("Firebase", "Failed in downloading")
                     }
-                } else {
-                    Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
+                }.addOnFailureListener {
+                    Toast.makeText(this, "UPLOAD FAIL", Toast.LENGTH_LONG).show()
+                    Log.e("Firebase", "Image Upload fail")
                 }
             }
         }
+
+    private fun getFileName(uri: Uri): String? {
+        return uri.path?.lastIndexOf('/')?.let { uri.path?.substring(it) }
     }
 }
