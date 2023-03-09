@@ -1,22 +1,19 @@
 package com.drestation.anythingpics
 
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.drestation.anythingpics.databinding.ActivityMainBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding // Enable binding
-    private lateinit var auth: FirebaseAuth
-    private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,8 +22,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //auth = FirebaseAuth.getInstance()
-
         // Google sign-in stuff below
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -34,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             .requestEmail()
             .build()
 
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        val googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         // Sign-in button press
         binding.signInGoogleBtn.setOnClickListener {
@@ -53,9 +48,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun onSignInResult(task: Task<GoogleSignInAccount>) {
         if (task.isSuccessful) {
-            //val account: GoogleSignInAccount? = task.result
-            // Intent to next view
             Toast.makeText(this, "IT WORKED", Toast.LENGTH_LONG).show()
+            val intent = Intent(this, CreatePin::class.java)
+            startActivity(intent)
         } else {
             Toast.makeText(this, task.exception.toString(), Toast.LENGTH_LONG).show()
         }
