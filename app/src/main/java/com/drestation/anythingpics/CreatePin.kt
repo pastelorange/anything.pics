@@ -16,7 +16,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
 class CreatePin : AppCompatActivity() {
-    private lateinit var binding: ActivityCreatePinBinding // Enable binding
+    private lateinit var binding: ActivityCreatePinBinding
     private lateinit var auth: FirebaseAuth
     private var imageFileName: String? = null
 
@@ -24,8 +24,6 @@ class CreatePin : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCreatePinBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        auth = Firebase.auth // Get the current user
 
         binding.imgUploadBtn.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK)
@@ -38,7 +36,8 @@ class CreatePin : AppCompatActivity() {
             val caption = binding.editCaptionTxt.text.toString()
 
             if (title.isNotEmpty() && caption.isNotEmpty() && imageFileName != null) {
-                val uid = auth.currentUser?.uid
+                // Get the current user
+                val uid = Firebase.auth.currentUser!!.uid
 
                 // Create Pin object
                 val pin = Pin(title, caption, imageFileName, uid)

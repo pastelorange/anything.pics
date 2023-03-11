@@ -7,54 +7,43 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.drestation.anythingpics.databinding.ActivityMainBinding
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding // Enable binding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-        // More binding stuff
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        val providers = arrayListOf (
+            AuthUI.IdpConfig.EmailBuilder().build(),
+            AuthUI.IdpConfig.GoogleBuilder().build()
+        )
 
-        // Google sign-in stuff below
-
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
+        val signInIntent = AuthUI.getInstance()
+            .createSignInIntentBuilder()
+            .setAvailableProviders(providers)
             .build()
-
-        val googleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        // Sign-in button press
-        binding.signInGoogleBtn.setOnClickListener {
-            val signInIntent = googleSignInClient.signInIntent
-            launcher.launch(signInIntent) // Call launcher
-        }
+        signInLauncher.launch(signInIntent)
     }
 
-    private val launcher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-                onSignInResult(task)
-            }
+    private val signInLauncher =
+        registerForActivityResult(FirebaseAuthUIActivityResultContract()) {
+            this.onSignInResult(it)
         }
 
-    private fun onSignInResult(task: Task<GoogleSignInAccount>) {
-        if (task.isSuccessful) {
+    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
+        if (result.resultCode == RESULT_OK) {
             val uid = FirebaseAuth.getInstance().currentUser
             val intent = Intent(this, CreatePin::class.java)
             intent.putExtra("uid", uid)
             startActivity(intent)
         } else {
-            Toast.makeText(this, "Sign-in failed", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Login Failed", Toast.LENGTH_LONG).show()
             startActivity(Intent(this, MainActivity::class.java))
         }
     }
