@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding // Enable binding
@@ -48,11 +49,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun onSignInResult(task: Task<GoogleSignInAccount>) {
         if (task.isSuccessful) {
-            Toast.makeText(this, "IT WORKED", Toast.LENGTH_LONG).show()
+            val uid = FirebaseAuth.getInstance().currentUser
             val intent = Intent(this, CreatePin::class.java)
+            intent.putExtra("uid", uid)
             startActivity(intent)
         } else {
-            Toast.makeText(this, task.exception.toString(), Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Sign-in failed", Toast.LENGTH_LONG).show()
+            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 }

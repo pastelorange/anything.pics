@@ -9,21 +9,67 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.drestation.anythingpics.databinding.ActivityCreatePinBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
 class CreatePin : AppCompatActivity() {
     private lateinit var binding: ActivityCreatePinBinding // Enable binding
+    private lateinit var auth: FirebaseAuth
+    private var imageFileName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreatePinBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.createBtn.setOnClickListener {
+        auth = Firebase.auth // Get the current user
+
+        binding.imgUploadBtn.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK)
             galleryIntent.type = "image/*"
             imageUploadLauncher.launch(galleryIntent)
+        }
+
+        binding.createPinBtn.setOnClickListener {
+            val title = binding.editTitleTxt.text.toString()
+            val caption = binding.editCaptionTxt.text.toString()
+
+            if (title.isNotEmpty() && caption.isNotEmpty() && imageFileName != null) {
+                val uid = auth.currentUser?.uid
+
+                // Create Pin object
+                val pin = Pin(title, caption, imageFileName, uid)
+
+                // Connect to Firestore
+                val db = FirebaseFirestore.getInstance().collection("Pinboard")
+
+                // Save as document
+                val documentId = "$title-$uid"
+                db.document(documentId).set(pin)
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "Project created!", Toast.LENGTH_LONG).show()
+                        binding.editTitleTxt.text.clear()
+                        binding.editCaptionTxt.text.clear()
+
+                        // Read from db and log
+                        db.get().addOnSuccessListener { collection ->
+                            for (document in collection) {
+                                Log.i("Firestore", "${document.id} => ${document.data}")
+                            }
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.w(
+                            "DB_Issue",
+                            exception.localizedMessage as String
+                        )
+                    }
+            } else {
+                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -34,14 +80,15 @@ class CreatePin : AppCompatActivity() {
                 val imageUri: Uri? = result.data?.data
 
                 // Extract file name with extension
-                val fileName = imageUri?.path?.lastIndexOf('/')?.let { imageUri.path?.substring(it) }
+                imageFileName =
+                    imageUri?.path?.lastIndexOf('/')?.let { imageUri.path?.substring(it) }
 
                 // Uploading the file
                 val storageRef = Firebase.storage.reference
-                val uploadTask = storageRef.child("img/$fileName").putFile(imageUri!!)
+                val uploadTask = storageRef.child("img/$imageFileName").putFile(imageUri!!)
 
                 uploadTask.addOnSuccessListener {
-                    storageRef.child("upload/$fileName").downloadUrl.addOnSuccessListener {
+                    storageRef.child("upload/$imageFileName").downloadUrl.addOnSuccessListener {
                         Toast.makeText(this, "Uploaded successfully", Toast.LENGTH_LONG).show()
                     }.addOnFailureListener {
                         Toast.makeText(this, "DOWNLOAD FAIL", Toast.LENGTH_LONG).show()
@@ -53,8 +100,4 @@ class CreatePin : AppCompatActivity() {
                 }
             }
         }
-
-    private fun getFileName(uri: Uri): String? {
-        return uri.path?.lastIndexOf('/')?.let { uri.path?.substring(it) }
-    }
 }
