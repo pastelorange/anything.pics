@@ -5,5 +5,4 @@ class Pin(
     var caption: String? = null,
     var imageFileName: String? = null,
     var uid: String? = null
-) {
-}
+)
