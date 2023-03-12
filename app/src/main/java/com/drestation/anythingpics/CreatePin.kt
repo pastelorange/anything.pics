@@ -3,6 +3,7 @@ package com.drestation.anythingpics
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -71,18 +72,18 @@ class CreatePin : AppCompatActivity() {
                 val uploadTask = storageRef.child("img/$imageFileName").putFile(imageUri!!)
 
                 uploadTask.addOnSuccessListener {
-                    storageRef.child("upload/$imageFileName").downloadUrl.addOnSuccessListener {
-                        Toast.makeText(this, "New pin added!", Toast.LENGTH_LONG).show()
+                    storageRef.child("img/$imageFileName").downloadUrl.addOnSuccessListener {
+                        Toast.makeText(this, "Success", Toast.LENGTH_LONG).show()
+                        var url = it.path
+                        Log.e("URL", url.toString())
+                        url = uploadTask.result.storage.downloadUrl.toString()
+                        Log.e("URL", url.toString())
+                    }.addOnFailureListener {
+                        Log.e("Firebase", "Failed in downloading")
                     }
+                }.addOnFailureListener {
+                    Log.e("Firebase", "Image Upload fail")
                 }
-//                    }.addOnFailureListener {
-//                        Toast.makeText(this, "DOWNLOAD FAIL", Toast.LENGTH_LONG).show()
-//                        Log.e("Firebase", "Failed in downloading")
-//                    }
-//                }.addOnFailureListener {
-//                    Toast.makeText(this, "UPLOAD FAIL", Toast.LENGTH_LONG).show()
-//                    Log.e("Firebase", "Image Upload fail")
-//                }
             }
         }
 }
