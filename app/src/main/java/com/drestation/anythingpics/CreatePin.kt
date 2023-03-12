@@ -17,13 +17,14 @@ import com.google.firebase.storage.ktx.storage
 // This class handles writing to Firebase
 class CreatePin : AppCompatActivity() {
     private lateinit var binding: ActivityCreatePinBinding
-    private var imageFileName: String? = null
+    private var imageUrl: String? = null // Global var to pass between functions
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreatePinBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Button to open device image gallery
         binding.imgUploadBtn.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK)
             galleryIntent.type = "image/*"
@@ -31,29 +32,7 @@ class CreatePin : AppCompatActivity() {
         }
 
         binding.createPinBtn.setOnClickListener {
-            val title = binding.editTitleTxt.text.toString()
-            val caption = binding.editCaptionTxt.text.toString()
-
-            if (title.isNotEmpty() && caption.isNotEmpty() && imageFileName != null) {
-                // Get the current user
-                val uid = Firebase.auth.currentUser!!.uid
-
-                // Create Pin object
-                val pin = Pin(title, caption, imageFileName, uid)
-
-                // Connect to Firestore
-                val db = FirebaseFirestore.getInstance().collection("pinboard")
-
-                // Save as document
-                val documentId = "$title-$uid"
-                db.document(documentId).set(pin)
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "Pin posted!", Toast.LENGTH_LONG).show()
-                        startActivity(Intent(this, PinboardActivity::class.java))
-                    }
-            } else {
-                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show()
-            }
+            createPin()
         }
     }
 
@@ -63,21 +42,17 @@ class CreatePin : AppCompatActivity() {
                 // Get uri of selected image
                 val imageUri: Uri? = result.data?.data
 
-                // Extract file name with extension
-                imageFileName =
+                val imageFileName =
                     imageUri?.path?.lastIndexOf('/')?.let { imageUri.path?.substring(it) }
 
-                // Uploading the file
                 val storageRef = Firebase.storage.reference
+                // Upload to Firebase Storage with putFile()
                 val uploadTask = storageRef.child("img/$imageFileName").putFile(imageUri!!)
 
                 uploadTask.addOnSuccessListener {
                     storageRef.child("img/$imageFileName").downloadUrl.addOnSuccessListener {
                         Toast.makeText(this, "Success", Toast.LENGTH_LONG).show()
-                        var url = it.path
-                        Log.e("URL", url.toString())
-                        url = uploadTask.result.storage.downloadUrl.toString()
-                        Log.e("URL", url.toString())
+                        imageUrl = it.toString()
                     }.addOnFailureListener {
                         Log.e("Firebase", "Failed in downloading")
                     }
@@ -86,4 +61,30 @@ class CreatePin : AppCompatActivity() {
                 }
             }
         }
+
+    private fun createPin() {
+        val title = binding.editTitleTxt.text.toString()
+        val caption = binding.editCaptionTxt.text.toString()
+
+        if (title.isNotEmpty() && caption.isNotEmpty() && imageUrl != null) {
+            // Get the current user
+            val uid = Firebase.auth.currentUser!!.uid
+
+            // Create Pin object
+            val pin = Pin(title, caption, imageUrl, uid)
+
+            // Connect to Firestore
+            val db = FirebaseFirestore.getInstance().collection("pinboard")
+
+            // Save as document
+            val documentId = "$title-$uid"
+            db.document(documentId).set(pin)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Pin posted!", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this, PinboardActivity::class.java))
+                }
+        } else {
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show()
+        }
+    }
 }
