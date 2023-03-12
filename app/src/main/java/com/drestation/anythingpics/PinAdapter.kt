@@ -3,8 +3,10 @@ package com.drestation.anythingpics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 
 // This class acts as middleware for the model and view
 class PinAdapter(private val pins: List<Pin>) : RecyclerView.Adapter<PinAdapter.ViewHolder>() {
@@ -13,6 +15,7 @@ class PinAdapter(private val pins: List<Pin>) : RecyclerView.Adapter<PinAdapter.
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleTextView = itemView.findViewById<TextView>(R.id.titleTextView)
         val captionTextView = itemView.findViewById<TextView>(R.id.captionTextView)
+        val imageView = itemView.findViewById<ImageView>(R.id.imageView)
     }
 
     // This renders each item_pin
@@ -28,6 +31,7 @@ class PinAdapter(private val pins: List<Pin>) : RecyclerView.Adapter<PinAdapter.
         with(viewHolder) {
             titleTextView.text = pin.title
             captionTextView.text = pin.caption
+            Picasso.get().load(pin.imageUrl).into(imageView)
         }
     }
 
