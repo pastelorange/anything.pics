@@ -40,13 +40,14 @@ class CreatePin : AppCompatActivity() {
                 val pin = Pin(title, caption, imageFileName, uid)
 
                 // Connect to Firestore
-                val db = FirebaseFirestore.getInstance().collection("Pinboard")
+                val db = FirebaseFirestore.getInstance().collection("pinboard")
 
                 // Save as document
                 val documentId = "$title-$uid"
                 db.document(documentId).set(pin)
                     .addOnSuccessListener {
-                        Toast.makeText(this, "Project created!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Pin posted!", Toast.LENGTH_LONG).show()
+                        startActivity(Intent(this, PinboardActivity::class.java))
                     }
             } else {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show()
