@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.drestation.anythingpics.databinding.ActivityPinboardBinding
 import androidx.activity.viewModels
 
+// This activity renders activity_pinboard
 class PinboardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPinboardBinding
 

@@ -13,6 +13,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
+// This class handles writing to Firebase
 class CreatePin : AppCompatActivity() {
     private lateinit var binding: ActivityCreatePinBinding
     private var imageFileName: String? = null

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
+// This class acts as middleware for the model and view
 class PinAdapter(private val pins: List<Pin>) : RecyclerView.Adapter<PinAdapter.ViewHolder>() {
 
     // This class is used to access the elements in item_pin layout file
