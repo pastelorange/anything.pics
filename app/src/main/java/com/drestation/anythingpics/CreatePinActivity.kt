@@ -3,7 +3,6 @@ package com.drestation.anythingpics
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -53,7 +52,7 @@ class CreatePinActivity : AppCompatActivity() {
                 // When image is done uploading
                 uploadTask.addOnSuccessListener {
                     storageRef.child("img/$imageFileName").downloadUrl.addOnSuccessListener {
-                        Toast.makeText(this, "Success", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
 
                         // Save the URL
                         imageUrl = it.toString()
@@ -83,7 +82,7 @@ class CreatePinActivity : AppCompatActivity() {
             val documentId = "$title-$uid"
             db.document(documentId).set(pin)
                 .addOnSuccessListener {
-                    Toast.makeText(this, "Pin posted!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Pin posted!", Toast.LENGTH_SHORT).show()
                     finish()
                 }
         } else {
