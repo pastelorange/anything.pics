@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreatePin">
+    android:orientation="vertical"
+    android:padding="20dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:context=".CreatePinActivity">
+
+    <ImageView
+        android:id="@+id/imagePreview"
+        android:layout_width="wrap_content"
+        android:layout_height="400dp"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"
+
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
 
     <Button
-        android:id="@+id/imgUploadBtn"
+        android:id="@+id/imageUploadButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select pic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="center"
+        android:text="Select pic" />
 
     <EditText
-        android:id="@+id/editTitleTxt"
-        android:layout_width="wrap_content"
+        android:id="@+id/editTitleText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Enter title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/imgUploadBtn" />
+        android:hint="Title"
+        android:inputType="textPersonName" />
 
     <EditText
-        android:id="@+id/editCaptionTxt"
-        android:layout_width="wrap_content"
+        android:id="@+id/editCaptionText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Enter caption"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/editTitleTxt" />
+        android:hint="Caption"
+        android:inputType="textPersonName" />
 
     <Button
-        android:id="@+id/createPinBtn"
+        android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/editCaptionTxt" />
+        android:text="Post" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

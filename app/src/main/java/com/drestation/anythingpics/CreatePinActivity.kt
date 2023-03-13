@@ -13,9 +13,10 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.squareup.picasso.Picasso
 
 // This class handles writing to Firebase
-class CreatePin : AppCompatActivity() {
+class CreatePinActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreatePinBinding
     private var imageUrl: String? = null // Global var to pass between functions
 
@@ -25,13 +26,13 @@ class CreatePin : AppCompatActivity() {
         setContentView(binding.root)
 
         // Button to open device image gallery
-        binding.imgUploadBtn.setOnClickListener {
+        binding.imageUploadButton.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK)
             galleryIntent.type = "image/*"
             imageUploadLauncher.launch(galleryIntent)
         }
 
-        binding.createPinBtn.setOnClickListener {
+        binding.submitButton.setOnClickListener {
             createPin()
         }
     }
@@ -49,22 +50,24 @@ class CreatePin : AppCompatActivity() {
                 // Upload to Firebase Storage with putFile()
                 val uploadTask = storageRef.child("img/$imageFileName").putFile(imageUri!!)
 
+                // When image is done uploading
                 uploadTask.addOnSuccessListener {
                     storageRef.child("img/$imageFileName").downloadUrl.addOnSuccessListener {
                         Toast.makeText(this, "Success", Toast.LENGTH_LONG).show()
+
+                        // Save the URL
                         imageUrl = it.toString()
-                    }.addOnFailureListener {
-                        Log.e("Firebase", "Failed in downloading")
+
+                        // Load that URL into the image preview
+                        Picasso.get().load(imageUrl).into(binding.imagePreview)
                     }
-                }.addOnFailureListener {
-                    Log.e("Firebase", "Image Upload fail")
                 }
             }
         }
 
     private fun createPin() {
-        val title = binding.editTitleTxt.text.toString()
-        val caption = binding.editCaptionTxt.text.toString()
+        val title = binding.editTitleText.text.toString()
+        val caption = binding.editCaptionText.text.toString()
 
         if (title.isNotEmpty() && caption.isNotEmpty() && imageUrl != null) {
             // Get the current user
@@ -76,12 +79,12 @@ class CreatePin : AppCompatActivity() {
             // Connect to Firestore
             val db = FirebaseFirestore.getInstance().collection("pinboard")
 
-            // Save as document
+            // Save as document and return to previous activity
             val documentId = "$title-$uid"
             db.document(documentId).set(pin)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Pin posted!", Toast.LENGTH_LONG).show()
-                    startActivity(Intent(this, PinboardActivity::class.java))
+                    finish()
                 }
         } else {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_LONG).show()

@@ -13,9 +13,8 @@ class PinAdapter(private val pins: List<Pin>) : RecyclerView.Adapter<PinAdapter.
 
     // This class is used to access the elements in item_pin layout file
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val titleTextView = itemView.findViewById<TextView>(R.id.titleTextView)
-        val captionTextView = itemView.findViewById<TextView>(R.id.captionTextView)
-        val imageView = itemView.findViewById<ImageView>(R.id.imageView)
+        //val titleTextView = itemView.findViewById<TextView>(R.id.titleTextView)
+        val imageView: ImageView = itemView.findViewById<ImageView>(R.id.imageView)
     }
 
     // This renders each item_pin
@@ -29,8 +28,7 @@ class PinAdapter(private val pins: List<Pin>) : RecyclerView.Adapter<PinAdapter.
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val pin = pins[position]
         with(viewHolder) {
-            titleTextView.text = pin.title
-            captionTextView.text = pin.caption
+            //titleTextView.text = pin.title
             Picasso.get().load(pin.imageUrl).into(imageView)
         }
     }

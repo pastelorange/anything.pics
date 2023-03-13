@@ -1,9 +1,11 @@
 package com.drestation.anythingpics
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import com.drestation.anythingpics.databinding.ActivityPinboardBinding
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.drestation.anythingpics.databinding.ActivityPinboardBinding
 
 // This activity renders activity_pinboard
 class PinboardActivity : AppCompatActivity() {
@@ -17,6 +19,13 @@ class PinboardActivity : AppCompatActivity() {
         val viewModel: PinViewModel by viewModels()
         viewModel.getPins().observe(this) {
             binding.recyclerView.adapter = PinAdapter(it)
+            binding.recyclerView.layoutManager =
+                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         }
+
+        binding.goToCreatePinActivityButton.setOnClickListener {
+            startActivity(Intent(this, CreatePinActivity::class.java))
+        }
+        // https://www.geeksforgeeks.org/android-recyclerview-as-staggered-grid-with-kotlin/
     }
 }

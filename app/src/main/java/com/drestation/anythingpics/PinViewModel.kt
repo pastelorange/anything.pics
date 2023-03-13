@@ -12,11 +12,10 @@ class PinViewModel: ViewModel() {
     private var pins = MutableLiveData<List<Pin>>()
 
     init {
-        val uid = Firebase.auth.currentUser?.uid
+        //val uid = Firebase.auth.currentUser?.uid
 
         // Build a query to get the document from "projects"
         val db = FirebaseFirestore.getInstance().collection("pinboard")
-            .whereEqualTo("uid", uid)
             .orderBy("title")
             .addSnapshotListener { documents, _ ->
                 // If documents is not null
