@@ -22,7 +22,9 @@ class SignInActivity : AppCompatActivity() {
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(providers)
+            .setLogo(R.mipmap.ic_launcher)
             .build()
+
         signInLauncher.launch(signInIntent)
     }
 
