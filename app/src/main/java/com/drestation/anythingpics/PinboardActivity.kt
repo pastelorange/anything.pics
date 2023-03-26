@@ -19,8 +19,6 @@ class PinboardActivity : AppCompatActivity() {
         val viewModel: PinViewModel by viewModels()
         viewModel.getPins().observe(this) {
             binding.recyclerView.adapter = PinAdapter(it)
-            binding.recyclerView.layoutManager =
-                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         }
 
         binding.goToCreatePinActivityButton.setOnClickListener {

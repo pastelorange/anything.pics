@@ -15,7 +15,7 @@ class PinViewModel: ViewModel() {
         //val uid = Firebase.auth.currentUser?.uid
 
         // Build a query to get the document from "projects"
-        val db = FirebaseFirestore.getInstance().collection("pinboard")
+        FirebaseFirestore.getInstance().collection("pinboard")
             .orderBy("title")
             .addSnapshotListener { documents, _ ->
                 // If documents is not null
