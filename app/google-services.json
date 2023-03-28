@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "883109639767-4n82ojmcvqaj22c2juiu8m282agodahb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.drestation.anythingpics",
+            "certificate_hash": "126a963b6c0ce6fe158d51143d371e3b78cac618"
+          }
+        },
+        {
+          "client_id": "883109639767-8d3886l09kt75iccdkriunv0sh5kkg05.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.drestation.anythingpics",
+            "certificate_hash": "76f3dd776da49b45aeaa878e2de3a7e680080b7e"
+          }
+        },
+        {
           "client_id": "883109639767-9kppvdd1ce9oslt2sc7mfhq5o49t4t9a.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -22,7 +38,7 @@
           }
         },
         {
-          "client_id": "883109639767-44u89tfv1s0dju17gh85ccki42of0r2g.apps.googleusercontent.com",
+          "client_id": "883109639767-mjoivkkgfr25m2gg90a3vhj6a6ktddfk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
