@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Anythingpics"
         tools:targetApi="31">
         <activity
+            android:name=".DetailedPinActivity"
+            android:exported="false" />
+        <activity
             android:name=".PinboardActivity"
             android:exported="false" />
         <activity

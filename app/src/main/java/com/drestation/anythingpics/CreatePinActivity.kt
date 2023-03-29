@@ -58,7 +58,7 @@ class CreatePinActivity : AppCompatActivity() {
                         imageUrl = it.toString()
 
                         // Load that URL into the image preview
-                        Picasso.get().load(imageUrl).into(binding.imagePreview)
+                        Picasso.get().load(imageUrl).into(binding.imageView)
                     }
                 }
             }

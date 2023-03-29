@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.drestation.anythingpics.databinding.ActivityPinboardBinding
 
 // This activity renders activity_pinboard
@@ -29,5 +28,8 @@ class PinboardActivity : AppCompatActivity(), PinAdapter.ItemListener {
 
     override fun itemSelected(pin: Pin) {
         Log.i("Pin selected", "$pin")
+        val intent = Intent(this, DetailedPinActivity::class.java)
+        intent.putExtra("pin", pin)
+        startActivity(intent)
     }
 }
