@@ -8,16 +8,18 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.drestation.anythingpics.databinding.ActivityCreatePinBinding
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
+import java.util.*
 
 // This class handles writing to Firebase
 class CreatePinActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreatePinBinding
-    private var imageUrl: String? = null // Global var to pass between functions
+    private var imageUrl: String? = null // Var to pass between functions
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +54,6 @@ class CreatePinActivity : AppCompatActivity() {
                 // When image is done uploading
                 uploadTask.addOnSuccessListener {
                     storageRef.child("img/$imageFileName").downloadUrl.addOnSuccessListener {
-                        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show()
-
                         // Save the URL
                         imageUrl = it.toString()
 
@@ -67,20 +67,21 @@ class CreatePinActivity : AppCompatActivity() {
     private fun createPin() {
         val title = binding.editTitleText.text.toString()
         val caption = binding.editCaptionText.text.toString()
+        val timestamp = Timestamp.now()
 
         if (title.isNotEmpty() && caption.isNotEmpty() && imageUrl != null) {
             // Get the current user
             val uid = Firebase.auth.currentUser!!.uid
 
             // Create Pin object
-            val pin = Pin(title, caption, imageUrl, uid)
+            val pin = Pin(title, caption, imageUrl, uid, timestamp)
 
             // Connect to Firestore
-            val db = FirebaseFirestore.getInstance().collection("pinboard")
+            val db = FirebaseFirestore.getInstance().collection(uid)
 
             // Save as document and return to previous activity
-            val documentId = "$title-$uid"
-            db.document(documentId).set(pin)
+            // The document name is auto generated
+            db.document().set(pin)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Pin posted!", Toast.LENGTH_SHORT).show()
                     finish()
