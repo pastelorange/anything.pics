@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
 // This class acts as middleware for the model and view
-class PinAdapter(private val pins: List<Pin>) : RecyclerView.Adapter<PinAdapter.ViewHolder>() {
+class PinAdapter(
+    private val pins: List<Pin>,
+    private val itemListener: ItemListener
+) : RecyclerView.Adapter<PinAdapter.ViewHolder>() {
 
     // This class is used to access the elements in item_pin layout file
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -32,9 +35,19 @@ class PinAdapter(private val pins: List<Pin>) : RecyclerView.Adapter<PinAdapter.
             titleTextView.text = pin.title
             captionTextView.text = pin.caption
             Picasso.get().load(pin.imageUrl).into(imageView)
+
+            itemView.setOnClickListener {
+                itemListener.itemSelected(pin)
+            }
         }
     }
 
+    // Custom interface for selecting pins
+    interface ItemListener {
+        fun itemSelected(pin: Pin)
+    }
+
+    // Unused but need to inherit from parent class
     override fun getItemCount(): Int {
         return pins.size
     }

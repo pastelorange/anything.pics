@@ -2,13 +2,14 @@ package com.drestation.anythingpics
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.drestation.anythingpics.databinding.ActivityPinboardBinding
 
 // This activity renders activity_pinboard
-class PinboardActivity : AppCompatActivity() {
+class PinboardActivity : AppCompatActivity(), PinAdapter.ItemListener {
     private lateinit var binding: ActivityPinboardBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,12 +19,15 @@ class PinboardActivity : AppCompatActivity() {
 
         val viewModel: PinViewModel by viewModels()
         viewModel.getPins().observe(this) {
-            binding.recyclerView.adapter = PinAdapter(it)
+            binding.recyclerView.adapter = PinAdapter(it, this)
         }
 
         binding.goToCreatePinActivityButton.setOnClickListener {
             startActivity(Intent(this, CreatePinActivity::class.java))
         }
-        // https://www.geeksforgeeks.org/android-recyclerview-as-staggered-grid-with-kotlin/
+    }
+
+    override fun itemSelected(pin: Pin) {
+        Log.i("Pin selected", "$pin")
     }
 }
