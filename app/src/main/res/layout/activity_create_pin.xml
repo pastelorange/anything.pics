@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="20dp"
     android:orientation="vertical"
+    android:padding="20dp"
     tools:context=".CreatePinActivity">
 
     <ImageView
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
-        android:text="open photo gallery" />
+        android:text="Open photo gallery" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -35,8 +35,7 @@
             android:id="@+id/editTitleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Title"
-            android:inputType="textPersonName" />
+            android:hint="Title" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -48,8 +47,7 @@
             android:id="@+id/editCaptionText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Caption"
-            android:inputType="textPersonName" />
+            android:hint="Caption" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <RelativeLayout
@@ -61,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:text="submit" />
+            android:text="Submit" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cancelButton"
@@ -70,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@id/submitButton"
-            android:text="cancel" />
+            android:text="Cancel" />
 
     </RelativeLayout>
 
