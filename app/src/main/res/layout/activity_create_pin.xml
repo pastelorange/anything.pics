@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
+    android:layout_margin="20dp"
     android:orientation="vertical"
     tools:context=".CreatePinActivity">
 
@@ -12,42 +12,66 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
 
         app:srcCompat="@android:drawable/ic_menu_gallery" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/imageUploadButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="10dp"
-        android:text="Select pic" />
+        android:layout_marginBottom="20dp"
+        android:text="open photo gallery" />
 
-    <EditText
-        android:id="@+id/editTitleText"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:hint="Title"
-        android:inputType="textPersonName"
-        android:minHeight="48dp" />
+        android:layout_marginBottom="10dp">
 
-    <EditText
-        android:id="@+id/editCaptionText"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTitleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Title"
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:hint="Caption"
-        android:inputType="textPersonName"
-        android:minHeight="48dp" />
+        android:layout_marginBottom="20dp">
 
-    <Button
-        android:id="@+id/submitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Post" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editCaptionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Caption"
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/submitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="submit" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancelButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@id/submitButton"
+            android:text="cancel" />
+
+    </RelativeLayout>
 
 </LinearLayout>

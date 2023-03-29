@@ -36,6 +36,10 @@ class CreatePinActivity : AppCompatActivity() {
         binding.submitButton.setOnClickListener {
             createPin()
         }
+
+        binding.cancelButton.setOnClickListener {
+            finish()
+        }
     }
 
     private var imageUploadLauncher: ActivityResultLauncher<Intent> =
