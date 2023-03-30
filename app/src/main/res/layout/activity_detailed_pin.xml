@@ -59,5 +59,8 @@
         android:text="Delete forever"
         app:icon="@drawable/baseline_delete_forever_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:iconTint="@color/white"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/pomegranate"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

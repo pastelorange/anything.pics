@@ -7,4 +7,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="pink_400">#EC407A</color>
+    <color name="red_400">#EF5350</color>
+
+    <!-- Colors derived from https://materialui.co/flatuicolors -->
+    <color name="pomegranate">#C0392B</color>
+    <color name="alizarin">#E74C3C</color>
 </resources>
