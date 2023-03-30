@@ -21,10 +21,10 @@ class DetailedPinActivity : AppCompatActivity() {
 
         // Populate elements
         binding.titleTextView.text = pin!!.title
-        binding.captionTextView.text = pin.title
+        binding.captionTextView.text = pin.caption
         Picasso.get().load(pin.imageUrl).into(binding.imageView)
 
-        binding.deletePinButton.setOnClickListener {
+        binding.deleteButton.setOnClickListener {
             // Delete pin from Firestore
             val db = FirebaseFirestore.getInstance().collection(pin.uid!!)
             db.document(pin.documentId!!).delete()
