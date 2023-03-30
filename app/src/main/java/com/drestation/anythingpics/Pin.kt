@@ -9,9 +9,11 @@ data class Pin(
     var caption: String? = null,
     var imageUrl: String? = null,
     var uid: String? = null,
+    var documentId: String? = null,
     var timestamp: Timestamp? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -24,6 +26,7 @@ data class Pin(
         parcel.writeString(caption)
         parcel.writeString(imageUrl)
         parcel.writeString(uid)
+        parcel.writeString(documentId)
         parcel.writeParcelable(timestamp, flags)
     }
 

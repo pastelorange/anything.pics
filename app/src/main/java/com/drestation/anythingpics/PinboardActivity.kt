@@ -2,7 +2,6 @@ package com.drestation.anythingpics
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.drestation.anythingpics.databinding.ActivityPinboardBinding
@@ -26,8 +25,8 @@ class PinboardActivity : AppCompatActivity(), PinAdapter.ItemListener {
         }
     }
 
+    // On item selection, move to details activity and pass the Pin object
     override fun itemSelected(pin: Pin) {
-        Log.i("Pin selected", "$pin")
         val intent = Intent(this, DetailedPinActivity::class.java)
         intent.putExtra("pin", pin)
         startActivity(intent)
