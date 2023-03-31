@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "883109639767-ce26ijkrjk8v8c66bro5t1qjaaq2uqek.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.drestation.anythingpics",
+            "certificate_hash": "76f3dd776da49b45aeaa878e2de3a7e680080b7e"
+          }
+        },
+        {
           "client_id": "883109639767-mjoivkkgfr25m2gg90a3vhj6a6ktddfk.apps.googleusercontent.com",
           "client_type": 3
         }
