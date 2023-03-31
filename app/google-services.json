@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "883109639767-4314uvn42464pbhoik6t6sri9265pgho.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.drestation.anythingpics",
+            "certificate_hash": "3f807f3d119b2b724320907628577f98a3267028"
+          }
+        },
+        {
           "client_id": "883109639767-mjoivkkgfr25m2gg90a3vhj6a6ktddfk.apps.googleusercontent.com",
           "client_type": 3
         }
