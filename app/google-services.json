@@ -14,19 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "883109639767-4314uvn42464pbhoik6t6sri9265pgho.apps.googleusercontent.com",
+          "client_id": "883109639767-n7qsm759280l9dbuiqivhem7tpp3uq3g.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.drestation.anythingpics",
-            "certificate_hash": "3f807f3d119b2b724320907628577f98a3267028"
-          }
-        },
-        {
-          "client_id": "883109639767-ce26ijkrjk8v8c66bro5t1qjaaq2uqek.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.drestation.anythingpics",
-            "certificate_hash": "76f3dd776da49b45aeaa878e2de3a7e680080b7e"
+            "certificate_hash": "bf70d1df64ec86223944893ebcba1e70f9b98799"
           }
         },
         {
